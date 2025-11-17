@@ -55,7 +55,16 @@ pip3 install -r requirements.txt
 python app.py
 ```
 
+Or use the helper script:
+```bash
+./run.sh
+```
+
 The API will be available at `http://localhost:5000`
+
+**Verify the backend is running:**
+- Visit `http://localhost:5000/health` in your browser - you should see `{"status":"healthy","cards_loaded":120}`
+- Or check the terminal for: `Initialized: 120 cards loaded`
 
 ### Frontend Setup
 
@@ -196,6 +205,45 @@ This project was built to showcase:
 - REST API design and implementation
 - Modern React frontend development
 - Game strategy-focused UX design
+
+## 🔧 Troubleshooting
+
+### "Failed to fetch" Error
+
+If you see "Failed to fetch" or "Cannot connect to backend server" in the frontend:
+
+1. **Check if backend is running:**
+   ```bash
+   # In the backend directory
+   python app.py
+   ```
+   You should see: `Running on http://127.0.0.1:5000`
+
+2. **Verify backend is accessible:**
+   - Open `http://localhost:5000/health` in your browser
+   - You should see: `{"status":"healthy","cards_loaded":120}`
+
+3. **Check for port conflicts:**
+   - Make sure nothing else is using port 5000
+   - If needed, change the port in `backend/app.py` (line 100)
+
+4. **CORS issues:**
+   - The backend has CORS enabled, but if you still have issues, check that `flask-cors` is installed
+
+5. **Check browser console:**
+   - Open browser DevTools (F12) and check the Console tab for detailed error messages
+
+### Backend Won't Start
+
+- Make sure all dependencies are installed: `pip3 install -r requirements.txt`
+- Check Python version: `python3 --version` (should be 3.8+)
+- Verify the CSV file exists: `ls ../clash_royale_cards.csv`
+
+### Frontend Issues
+
+- Clear browser cache and hard refresh (Ctrl+Shift+R or Cmd+Shift+R)
+- Check that `npm install` completed successfully
+- Verify Vite is running on the expected port (usually 5173)
 
 ## 📄 License
 
