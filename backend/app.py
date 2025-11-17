@@ -32,6 +32,15 @@ def initialize_data():
 initialize_data()
 
 
+@app.route('/health', methods=['GET'])
+def health_check():
+    """Health check endpoint"""
+    return jsonify({
+        'status': 'healthy',
+        'cards_loaded': len(cards_df) if cards_df is not None else 0
+    })
+
+
 @app.route('/cards', methods=['GET'])
 def get_cards():
     """Get all cards in the dataset"""

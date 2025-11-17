@@ -19,11 +19,17 @@ function App() {
   const fetchCards = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/cards`)
-      if (!response.ok) throw new Error('Failed to fetch cards')
+      if (!response.ok) {
+        throw new Error(`Backend returned error: ${response.status} ${response.statusText}`)
+      }
       const data = await response.json()
       setCards(data)
+      setError(null)
     } catch (err) {
-      setError(err.message)
+      const errorMessage = err.message.includes('fetch') 
+        ? 'Cannot connect to backend server. Make sure the backend is running on http://localhost:5000'
+        : err.message
+      setError(errorMessage)
       console.error('Error fetching cards:', err)
     }
   }
@@ -53,11 +59,18 @@ function App() {
         }),
       })
 
-      if (!response.ok) throw new Error('Failed to get recommendations')
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || `Backend returned error: ${response.status}`)
+      }
       const data = await response.json()
       setRecommendations(data.recommendations || [])
+      setError(null)
     } catch (err) {
-      setError(err.message)
+      const errorMessage = err.message.includes('fetch') 
+        ? 'Cannot connect to backend server. Make sure the backend is running on http://localhost:5000'
+        : err.message
+      setError(errorMessage)
       console.error('Error fetching recommendations:', err)
     } finally {
       setLoading(false)
