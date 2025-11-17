@@ -44,7 +44,16 @@ def health_check():
 @app.route('/cards', methods=['GET'])
 def get_cards():
     """Get all cards in the dataset"""
-    cards_list = cards_df.to_dict('records')
+    # Replace NaN values with None for JSON serialization
+    cards_list = cards_df.replace({np.nan: None}).to_dict('records')
+    # Double-check for any remaining NaN values
+    for card in cards_list:
+        for key, value in list(card.items()):
+            # Check if value is NaN (works for float, but also handle other types)
+            if isinstance(value, float) and (value != value):  # NaN check
+                card[key] = None
+            elif pd.isna(value):
+                card[key] = None
     return jsonify(cards_list)
 
 
@@ -83,16 +92,27 @@ def get_recommendations():
             cards_df[cards_df['name'].isin(valid_cards)], row
         )
         
+        # Helper function to safely convert values
+        def safe_value(val, convert_func=None):
+            if pd.isna(val):
+                return None
+            if convert_func:
+                try:
+                    return convert_func(val)
+                except (ValueError, TypeError):
+                    return None
+            return val
+        
         recommendations.append({
             'name': row['name'],
             'synergy_score': float(score),
             'explanation': explanation,
-            'elixirCost': int(row['elixirCost']) if pd.notna(row['elixirCost']) else None,
-            'type': row['type'],
-            'rarity': row['rarity'],
-            'iconUrls': row['iconUrls'],
-            'hitpoints': int(row['hitpoints']) if pd.notna(row['hitpoints']) else None,
-            'usage': float(row['usage']) if pd.notna(row['usage']) else None
+            'elixirCost': safe_value(row['elixirCost'], int),
+            'type': safe_value(row['type']),
+            'rarity': safe_value(row['rarity']),
+            'iconUrls': safe_value(row['iconUrls']),
+            'hitpoints': safe_value(row['hitpoints'], int),
+            'usage': safe_value(row['usage'], float)
         })
     
     # Sort by synergy score and return top N
