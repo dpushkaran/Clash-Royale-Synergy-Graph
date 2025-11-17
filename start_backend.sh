@@ -7,6 +7,6 @@ source venv/bin/activate 2>/dev/null || {
     echo "Installing dependencies..."
     pip3 install -q -r requirements.txt
 }
-echo "🚀 Starting backend server on http://localhost:5000"
+echo "🚀 Starting backend server on http://localhost:5001"
 echo "Press Ctrl+C to stop"
 python3 app.py

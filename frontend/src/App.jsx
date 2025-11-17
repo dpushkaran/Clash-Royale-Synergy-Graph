@@ -3,7 +3,7 @@ import './App.css'
 import CardSelector from './components/CardSelector'
 import Recommendations from './components/Recommendations'
 
-const API_BASE_URL = 'http://localhost:5000'
+const API_BASE_URL = 'http://localhost:5001'
 
 function App() {
   const [cards, setCards] = useState([])
@@ -27,7 +27,7 @@ function App() {
       setError(null)
     } catch (err) {
       const errorMessage = err.message.includes('fetch') 
-        ? 'Cannot connect to backend server. Make sure the backend is running on http://localhost:5000'
+        ? 'Cannot connect to backend server. Make sure the backend is running on http://localhost:5001'
         : err.message
       setError(errorMessage)
       console.error('Error fetching cards:', err)
@@ -68,7 +68,7 @@ function App() {
       setError(null)
     } catch (err) {
       const errorMessage = err.message.includes('fetch') 
-        ? 'Cannot connect to backend server. Make sure the backend is running on http://localhost:5000'
+        ? 'Cannot connect to backend server. Make sure the backend is running on http://localhost:5001'
         : err.message
       setError(errorMessage)
       console.error('Error fetching recommendations:', err)

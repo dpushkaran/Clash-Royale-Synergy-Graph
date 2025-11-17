@@ -60,10 +60,12 @@ Or use the helper script:
 ./run.sh
 ```
 
-The API will be available at `http://localhost:5000`
+The API will be available at `http://localhost:5001`
+
+**Note:** Port 5000 is often used by macOS AirPlay Receiver, so we use port 5001 instead.
 
 **Verify the backend is running:**
-- Visit `http://localhost:5000/health` in your browser - you should see `{"status":"healthy","cards_loaded":120}`
+- Visit `http://localhost:5001/health` in your browser - you should see `{"status":"healthy","cards_loaded":120}`
 - Or check the terminal for: `Initialized: 120 cards loaded`
 
 ### Frontend Setup
@@ -212,20 +214,22 @@ This project was built to showcase:
 
 If you see "Failed to fetch" or "Cannot connect to backend server" in the frontend:
 
+**Note:** On macOS, port 5000 is often used by AirPlay Receiver. The app uses port 5001 to avoid conflicts.
+
 1. **Check if backend is running:**
    ```bash
    # In the backend directory
    python app.py
    ```
-   You should see: `Running on http://127.0.0.1:5000`
+   You should see: `Running on http://127.0.0.1:5001`
 
 2. **Verify backend is accessible:**
-   - Open `http://localhost:5000/health` in your browser
+   - Open `http://localhost:5001/health` in your browser
    - You should see: `{"status":"healthy","cards_loaded":120}`
 
 3. **Check for port conflicts:**
-   - Make sure nothing else is using port 5000
-   - If needed, change the port in `backend/app.py` (line 100)
+   - Make sure nothing else is using port 5001
+   - If needed, change the port in `backend/app.py` (line 109)
 
 4. **CORS issues:**
    - The backend has CORS enabled, but if you still have issues, check that `flask-cors` is installed
