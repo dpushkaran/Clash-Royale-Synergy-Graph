@@ -1,7 +1,7 @@
 """Recommendation algorithm with gap analysis for deck synergy"""
 import pandas as pd
 import numpy as np
-from .similarity import compute_cosine_similarity
+from similarity import compute_cosine_similarity
 
 
 def compute_gap_bonus(selected_df, candidate_row):
